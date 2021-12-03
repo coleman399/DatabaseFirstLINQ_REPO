@@ -169,7 +169,7 @@ namespace DatabaseFirstLINQ
 
             var customerShoppingCart = _context.ShoppingCarts.Include(sc => sc.User).Where(sc =>sc.User.Email == "oda@gmail.com").Include(sc => sc.Product).Select(sc => sc.Product.Price).Sum();
 
-            Console.WriteLine($"Total price of products: {customerShoppingCart}");
+            Console.WriteLine($"Total price of products: ${customerShoppingCart}");
 
         }
 
@@ -365,12 +365,12 @@ namespace DatabaseFirstLINQ
             var mikeShoppingCart = _context.ShoppingCarts.Include(sc => sc.User).Where(sc => sc.User.Email == "mike@gmail.com").Include(sc => sc.Product).Select(sc => sc.Product.Price).Sum();
             var totalOfTotals = aftonShoppingCart + bibiShoppingCart + janettShoppingCart + garyShoppingCart + mikeShoppingCart;
 
-            Console.WriteLine($"The total price of products in Afton's shopping cart is: {aftonShoppingCart}");
-            Console.WriteLine($"The total price of products in Bibi's shopping cart is: {bibiShoppingCart}");
-            Console.WriteLine($"The total price of products in Janett's shopping cart is: {janettShoppingCart}");
-            Console.WriteLine($"The total price of products in Gary's shopping cart is: {garyShoppingCart}");
-            Console.WriteLine($"The total price of products in Mike's shopping cart is: {mikeShoppingCart}");
-            Console.WriteLine($"The total price of the products in every user's shopping cart is: {totalOfTotals}");
+            Console.WriteLine($"The total price of products in Afton's shopping cart is: ${aftonShoppingCart}");
+            Console.WriteLine($"The total price of products in Bibi's shopping cart is: ${bibiShoppingCart}");
+            Console.WriteLine($"The total price of products in Janett's shopping cart is: ${janettShoppingCart}");
+            Console.WriteLine($"The total price of products in Gary's shopping cart is: ${garyShoppingCart}");
+            Console.WriteLine($"The total price of products in Mike's shopping cart is: ${mikeShoppingCart}");
+            Console.WriteLine($"The total price of the products in every user's shopping cart is: ${totalOfTotals}");
 
 
 
