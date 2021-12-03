@@ -22,7 +22,7 @@ namespace DatabaseFirstLINQ
             //ProblemFive();
             //ProblemSix();
             //ProblemSeven();
-            ProblemEight();
+            //ProblemEight();
             //ProblemNine();
             ProblemTen();
             //ProblemEleven();
@@ -150,23 +150,13 @@ namespace DatabaseFirstLINQ
             // Write a LINQ query that retreives all of the products in the shopping cart of the user who has the email "afton@gmail.com".
             // Then print the product's name, price, and quantity to the console.
 
-<<<<<<< HEAD
             var customerShoppingCart = _context.ShoppingCarts.Include(sc => sc.User).Where(sc => sc.User.Email == "afton@gmail.com").Include(sc => sc.Product);
-             
 
             foreach (ShoppingCart product in customerShoppingCart)
             {
                 Console.WriteLine($"Name: {product.Product.Name} Price: {product.Product.Price} Quantity: {product.Quantity}");
-=======
-            var customerUsers = _context.ShoppingCarts.Include(u => u.User).Where(u => u.User.Email == "afton@gmail.com").Include(u => u.Product);
-
-            foreach(ShoppingCart product in customerUsers)
-            {
-                Console.WriteLine($"Name: {product.Product.Name} \nPrice: {product.Product.Price} \nQuantity: {product.Quantity}\n\n");
->>>>>>> 519bb6fc530fbb85721aff90977fd84d307e8fa4
             }
-
-        }
+         }
 
         private void ProblemNine()
         {
@@ -185,6 +175,17 @@ namespace DatabaseFirstLINQ
             // Write a LINQ query that retreives all of the products in the shopping cart of users who have the role of "Employee".
             // Then print the user's email as well as the product's name, price, and quantity to the console.
 
+            var employee = _context.UserRoles.Include(ur => ur.User).Where(ur => ur.RoleId == 2).Select(ur => ur.User).ToList();
+
+            var cart = _context.ShoppingCarts.Include(ur => ur.User.UserRoles).Select(sc => new { sc.User, sc.Product, sc.Quantity, sc.User.UserRoles }).ToList();
+
+            foreach (var record in cart)
+            {
+                if (employee.Contains(record.User))
+                {
+                    Console.WriteLine($"Email: {record.User.Email} Product Name: {record.Product.Name} Price: {record.Product.Price} Quantity: {record.Quantity}");
+                }
+            }
         }
 
         // <><><><><><><><> CUD (Create, Update, Delete) Actions <><><><><><><><><>
