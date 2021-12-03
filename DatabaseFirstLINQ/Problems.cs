@@ -24,7 +24,7 @@ namespace DatabaseFirstLINQ
             //ProblemSeven();
             //ProblemEight();
             //ProblemNine();
-            ProblemTen();
+            //ProblemTen();
             //ProblemEleven();
             //ProblemTwelve();
             //ProblemThirteen();
@@ -35,7 +35,9 @@ namespace DatabaseFirstLINQ
             //ProblemEighteen();
             //ProblemNineteen();
             //ProblemTwenty();
-            BonusThree();
+            BonusOne();
+            //BonusTwo();
+            //BonusThree();
         }
 
         // <><><><><><><><> R Actions (Read) <><><><><><><><><>
@@ -334,6 +336,23 @@ namespace DatabaseFirstLINQ
         {
             // Write a query that finds the total of every users shopping cart products using LINQ.
             // Display the total of each users shopping cart as well as the total of the toals to the console.
+            var aftonShoppingCart = _context.ShoppingCarts.Include(sc => sc.User).Where(sc => sc.User.Email == "afton@gmail.com").Include(sc => sc.Product).Select(sc => sc.Product.Price).Sum();
+            var bibiShoppingCart = _context.ShoppingCarts.Include(sc => sc.User).Where(sc => sc.User.Email == "bibi@gmail.com").Include(sc => sc.Product).Select(sc => sc.Product.Price).Sum();
+            var janettShoppingCart = _context.ShoppingCarts.Include(sc => sc.User).Where(sc => sc.User.Email == "janett@gmail.com").Include(sc => sc.Product).Select(sc => sc.Product.Price).Sum();
+            var garyShoppingCart = _context.ShoppingCarts.Include(sc => sc.User).Where(sc => sc.User.Email == "gary@gmail.com").Include(sc => sc.Product).Select(sc => sc.Product.Price).Sum();
+            var mikeShoppingCart = _context.ShoppingCarts.Include(sc => sc.User).Where(sc => sc.User.Email == "mike@gmail.com").Include(sc => sc.Product).Select(sc => sc.Product.Price).Sum();
+            var totalOfTotals = aftonShoppingCart + bibiShoppingCart + janettShoppingCart + garyShoppingCart + mikeShoppingCart;
+
+            Console.WriteLine($"The total price of products in Afton's shopping cart is: {aftonShoppingCart}");
+            Console.WriteLine($"The total price of products in Bibi's shopping cart is: {bibiShoppingCart}");
+            Console.WriteLine($"The total price of products in Janett's shopping cart is: {janettShoppingCart}");
+            Console.WriteLine($"The total price of products in Gary's shopping cart is: {garyShoppingCart}");
+            Console.WriteLine($"The total price of products in Mike's shopping cart is: {mikeShoppingCart}");
+            Console.WriteLine($"The total price of the products in every user's shopping cart is: {totalOfTotals}");
+
+
+
+
         }
 
         // BIG ONE
