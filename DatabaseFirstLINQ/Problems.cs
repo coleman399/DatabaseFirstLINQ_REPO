@@ -22,7 +22,7 @@ namespace DatabaseFirstLINQ
             //ProblemFive();
             //ProblemSix();
             //ProblemSeven();
-            //ProblemEight();
+            ProblemEight();
             //ProblemNine();
             //ProblemTen();
             //ProblemEleven();
@@ -98,11 +98,16 @@ namespace DatabaseFirstLINQ
             // Write a LINQ query that gets all of the users who registered BEFORE 2016
             // Then print each user's email and registration date to the console.
             var users = _context.Users.ToList();
+            
 
             Console.WriteLine("Users who have registered before 2016:");
+            DateTime dateTime = DateTime.Parse("12/30/2015");
             foreach(User user in users)
             {
-                
+                if (user.RegistrationDate < dateTime)
+                {
+                    Console.WriteLine(user.Email + "Registered on " + user.RegistrationDate);
+                }
             }
 
         }
@@ -111,6 +116,19 @@ namespace DatabaseFirstLINQ
         {
             // Write a LINQ query that gets all of the users who registered AFTER 2016 and BEFORE 2018
             // Then print each user's email and registration date to the console.
+            var users = _context.Users.ToList();
+
+            Console.WriteLine("Users who have registered after 2016 and before 2018");
+            DateTime dateTime = DateTime.Parse("01/01/2017");
+            DateTime dateTime1 = DateTime.Parse("12/31/2017");
+            foreach(User user in users)
+            {
+                if (user.RegistrationDate < dateTime1 && user.RegistrationDate > dateTime)
+                {
+                    Console.WriteLine(user.Email + " Registered on " + user.RegistrationDate);
+                }
+            }
+
 
         }
 
@@ -132,6 +150,12 @@ namespace DatabaseFirstLINQ
             // Write a LINQ query that retreives all of the products in the shopping cart of the user who has the email "afton@gmail.com".
             // Then print the product's name, price, and quantity to the console.
 
+            var customerUsers = _context.ShoppingCarts.Include(u => u.User).Where(u => u.User.Email == "afton@gmail.com").Include(u => u.Product);
+
+            foreach(ShoppingCart product in customerUsers)
+            {
+                Console.WriteLine($"Name: {product.Product.Name} \nPrice: {product.Product.Price} \nQuantity: {product.Quantity}\n\n");
+            }
 
         }
 
