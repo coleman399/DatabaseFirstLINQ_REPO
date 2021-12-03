@@ -35,7 +35,7 @@ namespace DatabaseFirstLINQ
             //ProblemEighteen();
             //ProblemNineteen();
             //ProblemTwenty();
-            BonusOne();
+            //BonusOne();
             //BonusTwo();
             //BonusThree();
         }
@@ -330,6 +330,28 @@ namespace DatabaseFirstLINQ
             // Prompt the user to enter in an email and password through the console.
             // Take the email and password and check if the there is a person that matches that combination.
             // Print "Signed In!" to the console if they exists and the values match otherwise print "Invalid Email or Password.".
+                bool userVerify = false;
+                string userEmail = "";
+                string userPassword = "";
+            do
+            {
+                Console.WriteLine("Please Enter your Email:");
+                userEmail = Console.ReadLine();
+                Console.WriteLine("Please Enter your Password:");
+                userPassword = Console.ReadLine();
+                var user = _context.Users.Where(ur => ur.Email == userEmail && ur.Password == userPassword).FirstOrDefault();
+                if (user != null)
+                {
+                    userVerify = true;
+                    Console.WriteLine("User has been verified");
+
+                }
+                else
+                {
+                    Console.WriteLine("You have a Unverified Email and Password, please Try Again!\n");
+                }
+
+            } while (userVerify == false);
         }
 
         private void BonusTwo()
