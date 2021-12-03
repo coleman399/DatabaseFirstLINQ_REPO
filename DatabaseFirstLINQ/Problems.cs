@@ -28,13 +28,13 @@ namespace DatabaseFirstLINQ
             //ProblemEleven();
             //ProblemTwelve();
             //ProblemThirteen();
-            //ProblemFourteen(); - Austin
+            //ProblemFourteen();
             //ProblemFifteen();
             //ProblemSixteen();
             //ProblemSeventeen();
             //ProblemEighteen();
-            //ProblemNineteen(); - Austin
-            //ProblemTwenty();
+            //ProblemNineteen();
+            ProblemTwenty();
         }
 
         // <><><><><><><><> R Actions (Read) <><><><><><><><><>
@@ -295,6 +295,7 @@ namespace DatabaseFirstLINQ
 
             var userRole = _context.UserRoles.Where(ur => ur.User.Email == "oda@gmail.com").SingleOrDefault();
             _context.UserRoles.Remove(userRole);
+            _context.SaveChanges();
             Console.WriteLine($"Deleted role! ");
         }
 
@@ -314,6 +315,9 @@ namespace DatabaseFirstLINQ
         {
             // Delete the user with the email "oda@gmail.com" from the Users table using LINQ.
 
+            var deleteUser = _context.Users.Where(ur => ur.Email == "oda@gmail.com").SingleOrDefault();
+            _context.Users.Remove(deleteUser);
+            _context.SaveChanges();
         }
 
         // <><><><><><><><> BONUS PROBLEMS <><><><><><><><><>
