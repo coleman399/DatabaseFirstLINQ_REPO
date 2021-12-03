@@ -28,12 +28,12 @@ namespace DatabaseFirstLINQ
             //ProblemEleven();
             //ProblemTwelve();
             //ProblemThirteen();
-            //ProblemFourteen();
+            //ProblemFourteen(); - Austin
             //ProblemFifteen();
-            ProblemSixteen();
+            //ProblemSixteen();
             //ProblemSeventeen();
             //ProblemEighteen();
-            //ProblemNineteen();
+            //ProblemNineteen(); - Austin
             //ProblemTwenty();
         }
 
@@ -293,6 +293,9 @@ namespace DatabaseFirstLINQ
         {
             // Delete the role relationship from the user who has the email "oda@gmail.com" using LINQ.
 
+            var userRole = _context.UserRoles.Where(ur => ur.User.Email == "oda@gmail.com").SingleOrDefault();
+            _context.UserRoles.Remove(userRole);
+            Console.WriteLine($"Deleted role! ");
         }
 
         private void ProblemNineteen()
