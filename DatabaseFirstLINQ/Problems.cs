@@ -34,7 +34,8 @@ namespace DatabaseFirstLINQ
             //ProblemSeventeen();
             //ProblemEighteen();
             //ProblemNineteen();
-            ProblemTwenty();
+            //ProblemTwenty();
+            BonusThree();
         }
 
         // <><><><><><><><> R Actions (Read) <><><><><><><><><>
@@ -348,6 +349,158 @@ namespace DatabaseFirstLINQ
             // 3. If the user does not succesfully sing in
             // a. Display "Invalid Email or Password"
             // b. Re-prompt the user for credentials
+            runEcommerce();
+
+            void runEcommerce()
+            {
+                string userEmail = signIn();
+                operateEcommerce(userEmail);
+            }
+
+            
+
+        }
+        public string signIn()
+            {
+                bool userVerify = false;
+                string userEmail = "";
+                string userPassword = "";
+                do
+                {
+                    Console.WriteLine("Please Enter your Email:\n");
+                    userEmail = Console.ReadLine();
+                    Console.WriteLine("Please Enter your Password:\n");
+                    userPassword = Console.ReadLine();
+                    var user = _context.Users.Where(ur => ur.Email == userEmail && ur.Password == userPassword).FirstOrDefault();
+                    if (user != null)
+                    {
+                        userVerify = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("You have a Unverified Email and Password, please Try Again!\n");
+                    }
+
+                }while (userVerify== false);
+
+            return userEmail;
+
+            }
+
+        public void operateEcommerce(string userEmail)
+        {
+            string userInput = "";
+                do
+                {
+                    Console.WriteLine("What would you like to do?:\nView the Products in your Cart?: Enter 1\nView all the optional Products you can buy?: Enter 2\nSign Out: Enter 3\n");
+                    userInput = Console.ReadLine();
+                    switch (userInput)
+                    {
+                        case "1":
+                            displayProducts(userEmail);
+                            break;
+                        case "2":
+                            addItemToCart(userEmail);
+                            break;
+                        default:
+                            break;
+                    }
+
+                }while (userInput != "3");
+
+                Console.WriteLine("\n GoodBye \n");
+
+        }
+
+        private void displayProducts( string userEmail)
+        {
+
+            var customerShoppingCart = _context.ShoppingCarts.Include(sc => sc.User).Where(sc => sc.User.Email == userEmail).Include(sc => sc.Product);
+            Console.WriteLine("\n\nEverything in your cart currently consist of:\n\n");
+            foreach(ShoppingCart product in customerShoppingCart)
+            {
+                
+                Console.WriteLine($"The Item ID is: {product.ProductId}\nProduct: {product.Product.Name}\nCost: ${product.Product.Price}.\n\n");
+            }
+
+            
+            string userInput = "";
+
+            do
+            {
+                Console.WriteLine("What would you like to do?\n Remove a Item?: Enter 1\nAdd a Item?: Enter 2\nContinue?: Enter 3\n");
+                userInput= Console.ReadLine();
+                switch (userInput)
+                {
+                    case "1":
+                        removeItemFromCart(userEmail);
+                        break;
+                    case "2":
+                        addItemToCart(userEmail);
+                        break;
+                    default: break;
+                }
+            }while (userInput != "3");
+
+        }
+
+        public void removeItemFromCart(string userEmail)
+        {
+            Console.WriteLine("Please enter the item ID of the item you want to remove.: \n");
+            string userInput = Console.ReadLine();
+            int itemID = Int32.Parse(userInput);
+
+            var shoppingCartProducts = _context.ShoppingCarts.Where(sc => sc.User.Email == userEmail);
+            var item = shoppingCartProducts.Where(sc => sc.ProductId == itemID).FirstOrDefault();
+            _context.ShoppingCarts.Remove(item);
+            _context.SaveChanges();
+            Console.WriteLine($"The item {item.Product.Name} with ID: {item.ProductId} was Deleted from your Cart!");
+
+        }
+
+        public void addItemToCart(string userEmail)
+        {
+            Console.WriteLine("\n\nList of Products are as follows:\n");
+            var productsList = _context.Products;
+            foreach (Product product in productsList)
+            {
+                Console.WriteLine($"Product ID: {product.Id}\n Product Name: {product.Name}\n Description: {product.Description}\n Cost: ${product.Price}\n\n");
+            }
+
+
+            Console.WriteLine("Please enter the ID number of the item you wish to enter the cart. ");
+            var userInput = Int32.Parse(Console.ReadLine());
+            var newItem = _context.Products.Where(p => p.Id == userInput).SingleOrDefault();
+            
+            var userId = _context.Users.Where(u => u.Email == userEmail).Select(u => u.Id).SingleOrDefault();
+            var currentItem = _context.ShoppingCarts.Where(sc => sc.UserId == userId && sc.ProductId == newItem.Id).SingleOrDefault();
+
+            if(newItem == null)
+            {
+                Console.WriteLine("You input a wrong number.\nTry Again!\n\n");
+                addItemToCart(userEmail);
+            }
+            else if(currentItem != null)
+            {
+
+                currentItem.Quantity++;
+                _context.ShoppingCarts.Update(currentItem);
+                _context.SaveChanges();
+                Console.WriteLine($"{currentItem.Product.Name} is already in your cart, so we added another to your cart!\n");
+            }
+            else
+            {
+                
+                ShoppingCart newShoppingCart = new ShoppingCart()
+                {
+                    UserId = userId,
+                    ProductId = newItem.Id
+                };
+                _context.ShoppingCarts.Add(newShoppingCart);
+                _context.SaveChanges();
+                Console.WriteLine($"{newItem.Name} was added to your Shooping Cart.");
+            }
+
 
         }
 
